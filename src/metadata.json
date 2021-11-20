@@ -2,7 +2,5 @@
   "name": "V4L",
   "description": "Video4Linux Settings",
   "uuid": "v4l@bztes.dev",
-  "shell-version": [
-    "40"
-  ]
+  "shell-version": ["40", "41"]
 }
