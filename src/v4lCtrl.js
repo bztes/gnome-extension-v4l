@@ -57,7 +57,7 @@ _loadDevice = (name, path) => {
 _loadCtrl = (id, type, rawProps) => {
   const reProps = /([^=\s]+)=([-0-9]+)/gm;
 
-  const props = {};
+  const props = { step: 1 };
   for (let keyVal of rawProps.matchAll(reProps)) {
     const value = _parsePropValue(type, keyVal[2]);
     if (value !== null) {
@@ -83,6 +83,7 @@ _loadCtrl = (id, type, rawProps) => {
 _parsePropValue = (type, val) => {
   switch (type) {
     case "int":
+    case "menu":
       return Number(val);
     case "bool":
       return val != 0;
@@ -99,6 +100,7 @@ function setCtrl(device, ctrl, value) {
   }
 
   const cmd = `v4l2-ctl -d ${device.path} --set-ctrl=${ctrl.id}=${value}`;
+  console.log(cmd);
   GLib.spawn_command_line_sync(cmd);
 }
 
