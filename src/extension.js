@@ -19,7 +19,7 @@
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-
+const GObject = imports.gi.GObject;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
@@ -39,16 +39,15 @@ class Extension {
   }
 
   _addIndicator = () => {
-    this._indicator = new PanelMenu.Button(null, Me.metadata.uuid, false);
+    this._indicator = new IndicatorButton(this._updateMenu);
 
     let icon = new St.Icon({
-      gicon: new Gio.ThemedIcon({ name: "camera-symbolic" }),
+      gicon: new Gio.ThemedIcon({ name: "camera-web-symbolic" }),
       style_class: "system-status-icon",
     });
     this._indicator.add_child(icon);
-    this._indicator.connect("button-press-event", this._updateMenu);
 
-    Main.panel.addToStatusArea(Me.metadata.uuid, this._indicator);
+    Main.panel.addToStatusArea(Me.metadata.uuid, this._indicator, 0, "right");
   };
 
   _updateMenu = () => {
@@ -115,6 +114,26 @@ class SliderMenu {
     );
   }
 }
+
+var IndicatorButton = GObject.registerClass(
+  class IndicatorButton extends PanelMenu.Button {
+    _init(updateMenu) {
+      this.updateMenu = updateMenu;
+      super._init(null, Me.metadata.uuid, false);
+    }
+
+    vfunc_event(event) {
+      if (
+        event.type() == Clutter.EventType.TOUCH_BEGIN ||
+        event.type() == Clutter.EventType.BUTTON_PRESS
+      ) {
+        this.updateMenu();
+      }
+
+      return super.vfunc_event(event);
+    }
+  }
+);
 
 function init() {
   return new Extension();
