@@ -51,6 +51,26 @@ _loadDevice = (name, path) => {
     ctrls.push(ctrl);
   }
 
+  ctrls.sort((a, b) => {
+    if (a.type === "int" && b.type === "bool") {
+      return -1;
+    }
+
+    if (a.type === "bool" && b.type === "int") {
+      return 1;
+    }
+
+    if (a.name < b.name) {
+      return -1;
+    }
+
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
+
   return { name, path, ctrls };
 };
 
