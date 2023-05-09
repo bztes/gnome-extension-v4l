@@ -7,5 +7,7 @@ install:
 remove:
 	rm -rf $(INSTALL_DIR)
 
+upgrade: remove install
+
 dev:
 	dbus-run-session -- gnome-shell --nested --wayland

@@ -2,5 +2,5 @@
   "name": "V4L",
   "description": "Video4Linux top panel settings",
   "uuid": "v4l@bztes.dev",
-  "shell-version": ["40", "41", "42", "43"]
+  "shell-version": ["40", "41", "42", "43", "44"]
 }
